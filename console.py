@@ -43,6 +43,27 @@ STYLE = """<style>
 [data-testid="stHeader"] { background: transparent; }
 [data-testid="stMainBlockContainer"] { padding-top: 2.4rem; max-width: 1360px; }
 
+/* phones and small tablets, where Streamlit folds the sidebar away */
+.mobile-hint { display: none; }
+@media (max-width: 767px) {
+  /* a paper header bar, so the menu button never sits on top of the text scrolling beneath it */
+  [data-testid="stHeader"] { background: var(--paper); border-bottom: 1px solid var(--rule); }
+  [data-testid="stMainBlockContainer"] { padding-top: 4.4rem; padding-bottom: 3rem; }
+  /* the sidebar holds every control, so its button gets a label rather than a bare arrow */
+  [data-testid="stExpandSidebarButton"] { width: auto; height: 2rem; padding: 0 .75rem 0 .45rem; gap: .3rem;
+                                          background: var(--green); border-radius: 2px; }
+  [data-testid="stExpandSidebarButton"] [data-testid="stIconMaterial"] { color: #E3C77F; }
+  [data-testid="stExpandSidebarButton"]::after { content: "Menu"; font: 600 .68rem/1 var(--sans);
+                                                 letter-spacing: .16em; text-transform: uppercase; color: #EDE7D8; }
+  .mast .title { font-size: 2.05rem; }
+  .casefile .title { font-size: 1.7rem; }
+  .mobile-hint { display: block; font: italic 400 .95rem/1.4 var(--serif); color: var(--muted); margin: -.5rem 0 1.2rem; }
+  .mobile-hint b { font: 600 .7rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--green);
+                   font-style: normal; }
+  /* below 16px, iPhones zoom the page in whenever a field is tapped */
+  input, textarea { font-size: 16px !important; }
+}
+
 /* masthead */
 .mast { display: flex; justify-content: space-between; align-items: flex-end; gap: .6rem 1.5rem; flex-wrap: wrap;
         border-bottom: 3px double var(--ink); padding-bottom: .6rem; margin-bottom: 1.1rem; }
@@ -209,7 +230,9 @@ def stamp(status: str) -> str:
 def masthead(kicker: str, title: str) -> None:
     d = config.today()
     st.html(f'<div class="mast"><div><div class="kicker">{e(kicker)}</div><div class="title">{e(title)}</div></div>'
-            f'<div class="dateline">{d:%A} {d.day} {d:%B %Y}</div></div>')
+            f'<div class="dateline">{d:%A} {d.day} {d:%B %Y}</div></div>'
+            '<div class="mobile-hint">Tap <b>Menu</b> to change who you are acting as, switch views or send in an email.'
+            '</div>')
 
 
 def section_label(text: str) -> None:

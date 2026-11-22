@@ -1,5 +1,8 @@
 # ACT instruction automation – working demo
 
+**Try it online:** https://act-instruction-desk.streamlit.app (works on a phone too). If it has been
+asleep, click the button to wake it; it takes about a minute and starts with the six sample emails.
+
 A runnable version of the technical proposal in `../ACT-technical-proposal.docx`. A client emails an
 instruction with attachments; the system reads it, checks it, routes it, gets approvals where they
 are needed, updates the business systems, creates tasks and letters, replies to the client, and
