@@ -1,0 +1,6 @@
+anthropic==2.12.0
+fpdf2==2.9.0
+pydantic==2.14.4
+pypdf==7.1.1
+pytest==9.2.0
+streamlit==1.67.0

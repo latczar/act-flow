@@ -1,0 +1,59 @@
+# "Practice ledger" theme: warm paper, deep green ink, serif headings, monospace references.
+# console.py adds a small stylesheet on top for the masthead, register and status stamps.
+
+[theme]
+base = "light"
+primaryColor = "#1F4D3A"
+backgroundColor = "#F6F2E8"
+secondaryBackgroundColor = "#ECE5D5"
+textColor = "#1C2721"
+borderColor = "#D3C9B2"
+showWidgetBorder = true
+linkColor = "#1F4D3A"
+font = "'Libre Franklin':https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&display=swap"
+headingFont = "Newsreader:https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600&display=swap"
+codeFont = "'IBM Plex Mono':https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+baseFontSize = 15
+baseRadius = "0.15rem"
+buttonRadius = "0.15rem"
+headingFontWeights = [500, 500, 500, 600, 600, 600]
+codeBackgroundColor = "#ECE5D5"
+codeTextColor = "#1F4D3A"
+dataframeHeaderBackgroundColor = "#ECE5D5"
+dataframeBorderColor = "#DDD4C0"
+greenColor = "#2E6B4F"
+greenBackgroundColor = "#E2EBE0"
+greenTextColor = "#24573F"
+redColor = "#A3402F"
+redBackgroundColor = "#F3E0D8"
+redTextColor = "#8C3424"
+orangeColor = "#A8691A"
+orangeBackgroundColor = "#F3E6CC"
+orangeTextColor = "#7E4F12"
+violetColor = "#5D4E8C"
+violetBackgroundColor = "#E7E2EE"
+violetTextColor = "#4B3E78"
+blueColor = "#2C5878"
+blueBackgroundColor = "#DFE6EA"
+blueTextColor = "#244A66"
+grayColor = "#6A6656"
+grayBackgroundColor = "#E7E1D3"
+grayTextColor = "#55523F"
+
+[theme.sidebar]
+backgroundColor = "#173328"
+secondaryBackgroundColor = "#21463A"
+textColor = "#EDE7D8"
+primaryColor = "#D2B26A"
+borderColor = "#335A4A"
+codeBackgroundColor = "#21463A"
+codeTextColor = "#E3C77F"
+
+[client]
+toolbarMode = "minimal"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
