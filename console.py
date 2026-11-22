@@ -52,10 +52,21 @@ STYLE = """<style>
 .mast .dateline { font: italic 400 1.02rem/1.3 var(--serif); color: var(--muted); }
 
 /* summary strip */
-.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
-         border-bottom: 1px solid var(--rule); margin-bottom: 1.6rem; }
+.strip-wrap { container-type: inline-size; }
+.strip { display: grid; grid-template-columns: repeat(6, 1fr); border-bottom: 1px solid var(--rule); margin-bottom: 1.6rem; }
 .strip > div { padding: .35rem 1rem .9rem; border-left: 1px solid var(--rule); }
 .strip > div:first-child { border-left: none; padding-left: 0; }
+/* narrower: three, then two, per row; the first cell of each row has no rule or indent */
+@container (max-width: 820px) {
+  .strip { grid-template-columns: repeat(3, 1fr); }
+  .strip > div:nth-child(n) { border-left: 1px solid var(--rule); padding-left: 1rem; }
+  .strip > div:nth-child(3n+1) { border-left: none; padding-left: 0; }
+}
+@container (max-width: 460px) {
+  .strip { grid-template-columns: repeat(2, 1fr); }
+  .strip > div:nth-child(n) { border-left: 1px solid var(--rule); padding-left: 1rem; }
+  .strip > div:nth-child(odd) { border-left: none; padding-left: 0; }
+}
 .strip .lbl { font: 600 .64rem/1.25 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .strip .num { font: 500 2.15rem/1.1 var(--serif); font-variant-numeric: tabular-nums lining-nums; color: var(--ink);
               margin-top: .3rem; }
@@ -79,6 +90,21 @@ STYLE = """<style>
 .register .ref { font: 500 .8rem/1.6 var(--mono); color: var(--green); white-space: nowrap; }
 .register .from { color: var(--muted); font-size: .82rem; }
 .register .why { font-size: .84rem; max-width: 46ch; }
+/* when the register itself is narrow (a phone, or a small window with the sidebar open), each case becomes a
+   short stacked entry: reference and status on one line, then the instruction, sender and where it stands */
+.register-wrap { container-type: inline-size; }
+@container (max-width: 640px) {
+  .register thead { display: none; }
+  .register, .register tbody { display: block; }
+  .register tr { display: grid; grid-template-columns: 1fr auto; gap: .2rem .8rem; align-items: center;
+                 padding: .75rem .2rem .8rem; border-bottom: 1px solid var(--rule); }
+  .register td, .register td:first-child { display: block; padding: 0; border: none; }
+  .register td.status { grid-row: 1; grid-column: 2; justify-self: end; }
+  .register td.what, .register td.from, .register td.why { grid-column: 1 / -1; max-width: none; }
+  .register td.what { font-weight: 500; margin-top: .15rem; }
+  .register tr.open { background: rgba(176, 138, 62, .12); box-shadow: inset 3px 0 0 var(--brass); padding-left: .7rem; }
+  .register tr.open td, .register tr.open td:first-child { background: none; box-shadow: none; padding-left: 0; }
+}
 
 /* status stamps */
 .stamp { display: inline-block; font: 600 .62rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase;
@@ -464,16 +490,16 @@ def summary_strip(cases: list[dict]) -> None:
              ("Awaiting review", sum(c["status"] == "awaiting_review" for c in cases), ""),
              ("Awaiting client", sum(c["status"] == "awaiting_client" for c in cases), ""),
              ("Held or exception", held, "")]
-    st.html('<div class="strip">' + "".join(
+    st.html('<div class="strip-wrap"><div class="strip">' + "".join(
         f'<div class="{"flag" if label == "Held or exception" and value else ""}"><div class="lbl">{label}</div>'
         f'<div class="num">{value}' + (f"<small>{extra}</small>" if extra else "") + '</div></div>'
-        for label, value, extra in cells) + '</div>')
+        for label, value, extra in cells) + '</div></div>')
 
 
 def register(cases: list[dict], open_ref: str) -> None:
     rows = "".join(
         f'<tr class="{"open" if c["ref"] == open_ref else ""}"><td class="ref">{e(c["ref"])}</td>'
-        f'<td>{e(type_label(c.get("instruction_type")))}</td><td>{stamp(c["status"])}</td>'
+        f'<td class="what">{e(type_label(c.get("instruction_type")))}</td><td class="status">{stamp(c["status"])}</td>'
         f'<td class="from">{e(c.get("sender") or "")}</td><td class="why">{e(c.get("reason") or "")}</td></tr>'
         for c in cases)
     st.html('<div class="register-wrap"><table class="register"><thead><tr><th>Reference</th><th>Instruction</th>'
